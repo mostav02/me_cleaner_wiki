@@ -1,7 +1,7 @@
 # Current status of me_cleaner
 Please comment [here](https://github.com/corna/me_cleaner/issues/3) if me_cleaner works on your device (even if it is already listed as working)
 
-| PCH               | CPU               | ME   | SKU      | b4de4a4	       | 8f663e7	    |
+| PCH               | CPU               | ME   | SKU      | 61fd606	       | d2e2308	    |
 |:-----------------:|:-----------------:|:----:|:--------:|:------------------:|:------------------:|
 | Ibex Peak         | Nehalem           | 6.0  | Ignition | **WORKS**          | **WORKS**          |
 | Ibex Peak         | Nehalem           | 6.x  | 1.5/5 MB | DOESN'T WORK (yet) | DOESN'T WORK (yet) |
@@ -12,9 +12,9 @@ Please comment [here](https://github.com/corna/me_cleaner/issues/3) if me_cleane
 | Sunrise Point     | Skylake/Kabylake	| 11.x | CON/COR  | **WORKS**          | **WORKS** (1)      |
 | Union Point       | Kabylake	        | 11.6 | CON/COR  | UNTESTED           | UNTESTED           |
 
-With b4de4a4 all the partitions (except for FTPR) are removed
+With 61fd606 all the partitions (except for FTPR) are removed
 
-With 8f663e7 also some modules (the ones LZMA compressed) are removed from FTPR. The remaining ones are:
+With d2e2308 also some modules (the ones LZMA compressed) are removed from FTPR. The remaining ones are:
  * ROMP
  * BUP
  * KERNEL
