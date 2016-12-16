@@ -14,8 +14,8 @@ Please comment [here](https://github.com/corna/me_cleaner/issues/3) if me_cleane
 
 With 61fd606 all the partitions (except for FTPR) are removed
 
-With d2e2308 also some modules (the ones LZMA compressed) are removed from FTPR. The remaining ones are:
- * ROMP
+With d2e2308 also some modules (the ones LZMA compressed) are removed from FTPR. For example, the remaining ones on Sandy Bridge are:
+ * ROMP (sometimes)
  * BUP
  * KERNEL
  * POLICY
