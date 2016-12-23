@@ -8,7 +8,7 @@ The basic informations about Intel ME firmwares were provided by:
  * [Igor Skochinsky - Intel ME Secrets - RECON 2014](https://recon.cx/2014/slides/Recon%202014%20Skochinsky.pdf)
 
 Our work started when we found, on the Coreboot Mailing List, a message from Trammel Hudson in which he shared his [recent discovers about Intel ME firmwares](https://www.coreboot.org/pipermail/coreboot/2016-September/082016.html).
-Then we tried by ourself and we replicated the results: to make things simpler I created a Python script to modify the firmware automatically and we published it on the [Coreboot Mailing List](https://www.coreboot.org/pipermail/coreboot/2016-November/082331.html) and later on [GitHub](https://github.com/corna/me_cleaner).
+Then we tried by ourself and replicated the results: to make things simpler I created a Python script to modify the firmware automatically and we published it on the [Coreboot Mailing List](https://www.coreboot.org/pipermail/coreboot/2016-November/082331.html) and later on [GitHub](https://github.com/corna/me_cleaner).
 
 ## What does this tool do?
 
