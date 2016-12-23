@@ -42,7 +42,7 @@ The **3** is the most likely, and this means that, _maybe_, also the Huffman mod
 
 We can never be sure about this, but, thanks to the [Igor's 2014 presentation](https://recon.cx/2014/slides/Recon%202014%20Skochinsky.pdf) (slide 18), we can suppose that the code inside the internal ROM is just the code responsible for the very basic initialization of Intel ME.
 
-## How?
+## How does it work?
 
 Since there isn't any official documentation of the Intel ME firmwares, a short explanation of how me_cleaner works is mandatory.
 At first it detects if the image is a "pure" ME image (magic **$FPT** at offset 0x10) or a full BIOS dump (magic **5a a5 f0 0f** at offset 0x10). If it is a "pure" ME image it uses the whole file as ME image, otherwise it finds the ME region by reading the values inside the Intel Flash Descriptor.
