@@ -73,7 +73,7 @@ First you should understand that this tool does not reimplements **anything**, i
  * You are losing something. Intel ME doesn't only provides some services (useless and dangerous, IMHO), but it also does low-level stuff (like silicon workaround, thermal management, fan control...). Most of these things are often controlled by the OS, so they're not really needed, but who can be sure?
  * Bricking is **very** likely to happen! Just in case you didn't hear me the first time
  * Usually the ME region is not writeable by software, therefore you usually need an external programmer
- * Sometimes the integrated Intel NIC stops working after a cold boot, but it works after a warm boot
+ * ~~Sometimes the integrated Intel NIC stops working after a cold boot, but it works after a warm boot~~ Seems to be fixed with 9e42ae0
 
 If you have a motherboard with a socketed ROM chip you can test me_cleaner on a spare chip and leave the original one untouched, otherwise you can dump the original firmware and restore it with an external programmer in case of brick.
 
