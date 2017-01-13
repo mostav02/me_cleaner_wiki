@@ -58,24 +58,46 @@ The LZMA modules are placed after the Huffman data (after the [LLUT](http://me.b
 
 The Huffman modules are more tricky to remove, as the module manifests does not contain directly an offset. The Huffman modules are indexed by "chunks": each "chunk" represent a fixed-size block (usually 1024 bytes of uncompressed data) and it contains an offset to the Huffman stream and a flag. Each module manifest contains the base loading address of that module (that sets the starting chunk, `first_chunk = (module_base - overall_base) / chunk_size`) and the uncompressed module size (that sets the number of chunks, `last_chunk = first_chunk + module_size / chunk_size`). Once we have the chunk indexes we can iterate over them and remove the corresponding chunks of compressed data.
 
+## Why does it work? Aren't the partitions signed? How can you modify them?
+
+This is the simplified structure of a partition header:
+
+![Partition structure](http://oi64.tinypic.com/bhlkdg.jpg)
+
+As you can see the partition is not signed directly, instead all the modules are hashed and the modules manifests (that contain the hashes) are signed. This means that modify a module doesn't invalidate the signature, but only its hash.
+
+Luckily for us, Intel ME doesn't check all the hashes at once, but only when it needs to execute them. Moreover the system is allowed to boot after the execution of the first module (BUP).
+
+Therefore Intel ME:
+ * checks the partition signature: valid
+ * finds the BUP module and checks its hash: valid
+ * executes BUP
+  - at this point the system can boot correctly, without the 30-min window
+ * finds the following module (probably KERNEL) and checks its hash: **INVALID**
+ * stops the execution
+
 ## But I still don't trust you
 
 You're right, you should never trust a random guy on the Internet, but you don't have to trust me, you can check the [code](https://github.com/corna/me_cleaner/blob/master/me_cleaner.py) by yourself.
 
-And, by the way, most of the code is "find _x_ and overwrite it with 0xff".
+And, by the way
+ * most of the `me_cleaner` code is "find _x_ and overwrite it with 0xff".
+ * Intel ME doesn't accept unsigned code and, unfortunately, I don't own the Intel ME key
 
 ## Cool, how can I apply it?
 
 Whoa there cowboy, before flashing the modified image you should understand the implications of such modification.
 First you should understand that this tool does not reimplements **anything**, it only wipes parts of a basic component of your processor, so keep in mind:
- * Currently `me_cleaner` **DOES NOT** works on platforms with Intel Boot Guard, see [here](https://github.com/corna/me_cleaner/issues/6)
- * Bricking is likely to happen! Even if this tool has been tested with your system, it does not mean that this modification is safe, everything could go wrong
+ * Currently `me_cleaner` **DOES NOT** works on platforms with Intel Boot Guard in `verified boot` mode, see [here](https://github.com/corna/me_cleaner/issues/6)
+ * Bricking is likely to happen! Even if this tool has been tested with your system, it does not mean that this modification is safe, everything could go wrong. Of course you can always restore the original firmware with an external programmer and unbrick it (you do have a backup, don't you?).
  * You are losing something. Intel ME doesn't only provides some services (useless and dangerous, IMHO), but it also does low-level stuff (like silicon workaround, thermal management, fan control...). Most of these things are often controlled by the OS, so they're not really needed, but who can be sure?
  * Bricking is **very** likely to happen! Just in case you didn't hear me the first time
  * Usually the ME region is not writeable by software, therefore you usually need an external programmer
  * ~~Sometimes the integrated Intel NIC stops working after a cold boot, but it works after a warm boot~~ Seems to be fixed with 9e42ae0
 
-If you have a motherboard with a socketed ROM chip you can test me_cleaner on a spare chip and leave the original one untouched, otherwise you can dump the original firmware and restore it with an external programmer in case of brick.
+If you have a motherboard with a socketed ROM chip you can test me_cleaner on a spare chip and leave the original one untouched.
+
+In any case you should dump the original firmware and keep it in a safe place, just in case you need to restore it with an external programmer in case of brick.
 
 ## Ok, I'm not scared, I want to try it!
 
