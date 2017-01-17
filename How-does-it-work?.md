@@ -101,4 +101,40 @@ In any case you should dump the original firmware and keep it in a safe place, j
 
 ## Ok, I'm not scared, I want to try it!
 
-Great! You can follow [this](http://hardenedlinux.org/firmware/2016/11/17/neutralize_ME_firmware_on_sandybridge_and_ivybridge.html) guide if you want to test it. Please report the success on [#3](https://github.com/corna/me_cleaner/issues/3) (even if it's already listed in the [status page](https://github.com/corna/me_cleaner/wiki/me_cleaner-status)).
+Great! You can follow [this](http://hardenedlinux.org/firmware/2016/11/17/neutralize_ME_firmware_on_sandybridge_and_ivybridge.html) guide if you want to test it.
+
+Note that you can do a couple of tests before flashing the modified image to reduce the possibility of bricking (pre-Skylake only):
+ * Check the validity of the signature of the FTPR partition
+ * Check the validity of the SHA-256 hashes of the FTPR modules
+
+### Signature
+To check the signature of the FTPR partition you can use a couple of tools from Igor Skochinsky: clone this git repo
+
+     $ git clone https://github.com/skochinsky/me-tools.git
+
+Then unpack the FTPR partition and check its signature
+
+     $ cd me-tools/
+     $ python2 ./me_unpack.py <modified image> -x #It will fail on non-Windows system, doesn't matter
+     $ python2 ./me_sigcheck.py FTPR_part.bin
+
+Check if the output ends with "`signature seems valid`"
+
+### Hashes
+To check the hashes you have to decompress the Huffman modules using `unhuffme`:
+
+https://io.netgarage.org/me/
+
+Download the sources, build them and run
+
+     $ ./unhuffme <modified image>
+
+It should print the list of the modules in this format:
+
+     <name> <SHA-256 hash> <lzma, [MATCH] or incomplete>
+
+Check that `BUP` (always present) and `ROMP` (not always present) have `[MATCH]`, and that all the others have either `lzma` or `incomplete`
+
+If both tests were successfull you are ready to flash!
+
+Please report the success on [#3](https://github.com/corna/me_cleaner/issues/3) (even if it's already listed in the [status page](https://github.com/corna/me_cleaner/wiki/me_cleaner-status)).
