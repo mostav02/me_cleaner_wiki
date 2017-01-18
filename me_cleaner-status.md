@@ -3,10 +3,10 @@ Please comment [here](https://github.com/corna/me_cleaner/issues/3) if me_cleane
 
 | PCH               | CPU               | ME   | SKU      | 61fd606	 | 4e9fc2e      | 42ba8e8      |
 |:-----------------:|:-----------------:|:----:|:--------:|:------------:|:------------:|:------------:|
-| Ibex Peak         | Nehalem           | 6.0  | Ignition | **WORKS**    | UNTESTED     | UNTESTED     |
+| Ibex Peak         | Nehalem           | 6.0  | Ignition | **WORKS**    | **WORKS**    | **WORKS**    |
 | Ibex Peak         | Nehalem           | 6.x  | 1.5/5 MB | **DOESN'T WORK** | **DOESN'T WORK** | **DOESN'T WORK** |
 | Cougar Point      | Sandy Bridge      | 7.x  | 1.5/5 MB | **WORKS**    | **WORKS**    | **WORKS**    |
-| Panther Point     | Ivy Bridge        | 8.x  | 1.5/5 MB | **WORKS**    | **WORKS**    | UNTESTED     |
+| Panther Point     | Ivy Bridge        | 8.x  | 1.5/5 MB | **WORKS**    | **WORKS**    | **WORKS**    |
 | Lynx/Wildcat Point| Haswell/Broadwell | 9.x  | 1.5/5 MB | **WORKS**    | UNTESTED     | UNTESTED     |
 | Wildcat  Point LP | Broadwell Mobile	| 10.0 | 1.5/5 MB | UNTESTED     | UNTESTED     | UNTESTED     |
 | Sunrise Point     | Skylake/Kabylake	| 11.x | CON/COR  | **WORKS**    | **WORKS** (1)| UNTESTED     |
