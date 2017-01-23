@@ -34,6 +34,8 @@ After a while I updated me_cleaner to remove also most of the Huffman-compressed
 
 The resulting code size (compressed) is ~55 kB (on my X220).
 
+Since the TXE firmwares are very similar to the ME ones, I also adapted me_cleaner to work on them.
+
 ## How can I be sure that all the bad stuff is not in a ROM inside the CPU?
 
 We can never be sure about this, but, thanks to the [Igor's 2014 presentation](https://recon.cx/2014/slides/Recon%202014%20Skochinsky.pdf) (slide 18), we can suppose that the code inside the internal ROM is just the code responsible for the very basic initialization of Intel ME.
@@ -54,7 +56,7 @@ Now the ME image contains only the FTPR partition, as every other partition has 
 
 For pre-Skylake images, the internal structure of the partitions is known, and also most of the modules can be removed.
 
-The LZMA modules are placed after the Huffman data (after the [LLUT](http://me.bios.io/ME_blob_format#LLUT_Breakdown)), therefore any byte from the end of the Huffman section to the end of the FTPR partition is overwritten with 0xff.
+The LZMA modules are placed after the Huffman data (after the [LLUT](http://me.bios.io/ME_blob_format#LLUT_Breakdown)) and their positions are clearly saved inside the manifests, so they can easily be removed.
 
 The Huffman modules are more tricky to remove, as the module manifests does not contain directly an offset. The Huffman modules are indexed by "chunks": each "chunk" represent a fixed-size block (usually 1024 bytes of uncompressed data) and it contains an offset to the Huffman stream and a flag. Each module manifest contains the base loading address of that module (that sets the starting chunk, `first_chunk = (module_base - overall_base) / chunk_size`) and the uncompressed module size (that sets the number of chunks, `last_chunk = first_chunk + module_size / chunk_size`). Once we have the chunk indexes we can iterate over them and remove the corresponding chunks of compressed data.
 
@@ -86,12 +88,11 @@ And, by the way
 
 ## Cool, how can I apply it?
 
-Whoa there cowboy, before flashing the modified image you should understand the implications of such modification.
+Before flashing the modified image you should understand the implications of such modification.
 First you should understand that this tool does not reimplements **anything**, it only wipes parts of a basic component of your processor, so keep in mind:
  * Currently `me_cleaner` **DOES NOT** works on platforms with Intel Boot Guard in `verified boot` mode, see [here](https://github.com/corna/me_cleaner/issues/6)
  * Bricking is likely to happen! Even if this tool has been tested with your system, it does not mean that this modification is safe, everything could go wrong. Of course you can always restore the original firmware with an external programmer and unbrick it (you do have a backup, don't you?).
- * You are losing something. Intel ME doesn't only provides some services (useless and dangerous, IMHO), but it also does low-level stuff (like silicon workaround, thermal management, fan control...). Most of these things are often controlled by the OS, so they're not really needed, but who can be sure?
- * Bricking is **very** likely to happen! Just in case you didn't hear me the first time
+ * You are losing something. Intel ME doesn't only provides some services (that you may or may not use), but it also does low-level stuff (like silicon workaround, thermal management, fan control...). Most of these things are often controlled by something else, so they're not really needed, but who can be sure?
  * Usually the ME region is not writeable by software, therefore you usually need an external programmer
  * ~~Sometimes the integrated Intel NIC stops working after a cold boot, but it works after a warm boot~~ Seems to be fixed with 9e42ae0
 
@@ -103,29 +104,9 @@ In any case you should dump the original firmware and keep it in a safe place, j
 
 Great! You can follow [this](http://hardenedlinux.org/firmware/2016/11/17/neutralize_ME_firmware_on_sandybridge_and_ivybridge.html) guide if you want to test it.
 
-Note that you can do a couple of tests before flashing the modified image to reduce the possibility of bricking (pre-Skylake only):
- * Check the validity of the signature of the FTPR partition
- * Check the validity of the SHA-256 hashes of the FTPR modules
+Before flashing you can check the validity of the modules hashes to reduce the possibility of bricking (Intel ME, pre-Skylake only) using `unhuffme`:
 
-### Signature
-To check the signature of the FTPR partition you can use a couple of tools from Igor Skochinsky: clone this git repo
-
-     $ git clone https://github.com/skochinsky/me-tools.git
-
-Then unpack the FTPR partition and check its signature
-
-     $ cd me-tools/
-     $ python2 ./me_unpack.py <modified image> -x #It will fail on non-Windows system, doesn't matter
-     $ python2 ./me_sigcheck.py FTPR_part.bin
-
-Check if the output ends with "`signature seems valid`"
-
-### Hashes
-To check the hashes you have to decompress the Huffman modules using `unhuffme`:
-
-https://io.netgarage.org/me/
-
-Download the sources, build them and run
+Download the sources from https://io.netgarage.org/me/, build them and run
 
      $ ./unhuffme <modified image>
 
@@ -133,8 +114,22 @@ It should print the list of the modules in this format:
 
      <name> <SHA-256 hash> <lzma, [MATCH] or incomplete>
 
-Check that `BUP` (always present) and `ROMP` (not always present) have `[MATCH]`, and that all the others have either `lzma` or `incomplete`
+If `BUP` (always present) and `ROMP` (not always present) have:
+ * `[MATCH]`: you're done, the module is intact
+ * `incomplete`: the module has been modified and the stripped image **WILL** either brick your platform or go in the 30-min window. Check if the input image was valid and open an issue if necessary
+ * `lzma`: run `lzcat mod/ROMP-*.mod.lzma | sha256sum` or `lzcat mod/BUP-*.mod.lzma | sha256sum` and check whether the computed hash match with the unhuffme's one. If `lzcat` returns `File format not recognized` it means that the corresponding module has been removed
 
-If both tests were successfull you are ready to flash!
+All the other modules should have either `lzma` or `incomplete`.
 
 Please report the success on [#3](https://github.com/corna/me_cleaner/issues/3) (even if it's already listed in the [status page](https://github.com/corna/me_cleaner/wiki/me_cleaner-status)).
+
+## I've applied me_cleaner and my PC still works well: how can I check the status of Intel ME?
+
+You can use `intelmetool` from the coreboot repository:
+
+     $ git clone --depth=1 http://review.coreboot.org/p/coreboot
+     $ cd coreboot/util/intelmetool
+     $ make
+     $ sudo ./intelmetool -s
+
+On my platform (Thinkpad X220T with coreboot) it shows [this](https://gist.github.com/corna/d637a7c3279f41e9be65b43b673d54d3).
