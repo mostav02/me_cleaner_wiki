@@ -7,8 +7,8 @@ The basic informations about Intel ME firmwares were provided by:
  * [Igor Skochinsky - Rootkit in your laptop - Breakpoint 2012](http://me.bios.io/images/c/ca/Rootkit_in_your_laptop.pdf)
  * [Igor Skochinsky - Intel ME Secrets - RECON 2014](https://recon.cx/2014/slides/Recon%202014%20Skochinsky.pdf)
 
-Our work started when we found, on the Coreboot Mailing List, a message from Trammel Hudson in which he shared his [recent discovers about Intel ME firmwares](https://www.coreboot.org/pipermail/coreboot/2016-September/082016.html).
-Then we tried by ourself and replicated the results: to make things simpler I created a Python script to modify the firmware automatically and we published it on the [Coreboot Mailing List](https://www.coreboot.org/pipermail/coreboot/2016-November/082331.html) and later on [GitHub](https://github.com/corna/me_cleaner).
+Our work started when we found, on the coreboot Mailing List, a message from Trammel Hudson in which he shared his [recent discovers about Intel ME firmwares](https://www.coreboot.org/pipermail/coreboot/2016-September/082016.html).
+Then we tried by ourself and replicated the results: to make things simpler I created a Python script to modify the firmware automatically and we published it on the [coreboot Mailing List](https://www.coreboot.org/pipermail/coreboot/2016-November/082331.html) and later on [GitHub](https://github.com/corna/me_cleaner).
 
 ## What does this tool do?
 
@@ -21,7 +21,7 @@ It seems that the only fundamental partition is the FTPR (Factory Partition), as
  * The PAVP (partition MDMV, module JCOM) has been removed
  * And more...
 
-Based on the results on Trammel Hudson (again, on the Coreboot ML) I improved me_cleaner by removing also the LZMA-compressed modules in the FTPR partition (more or less half of the modules in the partition). This also removes the Intel Antitheft module (module TDT), and leaves only 4-5 Huffman-compressed modules. According to [Igor's 2014 presentation, slide 17](https://recon.cx/2014/slides/Recon%202014%20Skochinsky.pdf), these modules do the basic ME initialization:
+Based on the results on Trammel Hudson (again, on the coreboot ML) I improved me_cleaner by removing also the LZMA-compressed modules in the FTPR partition (more or less half of the modules in the partition). This also removes the Intel Antitheft module (module TDT), and leaves only 4-5 Huffman-compressed modules. According to [Igor's 2014 presentation, slide 17](https://recon.cx/2014/slides/Recon%202014%20Skochinsky.pdf), these modules do the basic ME initialization:
  * ROMP (not always present)
  * BUP - Bringup (hardware initialization/configuration)
  * KERNEL - Scheduler, low-level APIs for other modules
