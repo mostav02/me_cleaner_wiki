@@ -23,6 +23,6 @@ With 61fd606 all the partitions (except for FTPR) are removed
 
 With 89bbaf2 most of the modules (all the LZMA and most of the Huffman ones) are removed, leaving only BUP and ROMP (not always present).
 
-(1) Currently it **DOESN'T WORK** with coreboot, see [here](https://github.com/corna/me_cleaner/issues/19)
+(1) Currently it **DOESN'T WORK** with coreboot on Nehalem, see [here](https://github.com/corna/me_cleaner/issues/19)
 
 (2) Modules are not yet removed from versions >= 11 (Skylake and following)
