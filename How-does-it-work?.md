@@ -102,7 +102,9 @@ In any case you should dump the original firmware and keep it in a safe place, j
 
 ## Ok, I'm not scared, I want to try it!
 
-Great! You can follow [this](http://hardenedlinux.org/firmware/2016/11/17/neutralize_ME_firmware_on_sandybridge_and_ivybridge.html) guide if you want to test it.
+Great! You can follow [this](http://hardenedlinux.org/firmware/2016/11/17/neutralize_ME_firmware_on_sandybridge_and_ivybridge.html) guide if you want to try it.
+
+If you use [coreboot](https://www.coreboot.org/) you can instead enable it from the menuconfig: go in `Chipset` and select the option `Strip down the Intel ME/TXE firmware`, then flash the resulting `build/coreboot.rom` image with the usual methods.
 
 Before flashing you can check the validity of the modules hashes to reduce the possibility of bricking (Intel ME, pre-Skylake only) using `unhuffme`:
 
