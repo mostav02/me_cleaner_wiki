@@ -6,6 +6,8 @@ The basic informations about Intel ME firmwares were provided by:
  * [me.bios.info](http://me.bios.io/ME_blob_format)
  * [Igor Skochinsky - Rootkit in your laptop - Breakpoint 2012](http://me.bios.io/images/c/ca/Rootkit_in_your_laptop.pdf)
  * [Igor Skochinsky - Intel ME Secrets - RECON 2014](https://recon.cx/2014/slides/Recon%202014%20Skochinsky.pdf)
+ * [me-tools](https://github.com/skochinsky/me-tools)
+ * [MEAnalyzer](https://github.com/platomav/MEAnalyzer)
 
 Our work started when we found, on the coreboot Mailing List, a message from Trammel Hudson in which he shared his [recent discovers about Intel ME firmwares](https://www.coreboot.org/pipermail/coreboot/2016-September/082016.html).
 Then we tried by ourself and replicated the results: to make things simpler I created a Python script to modify the firmware automatically and we published it on the [coreboot Mailing List](https://www.coreboot.org/pipermail/coreboot/2016-November/082331.html) and later on [GitHub](https://github.com/corna/me_cleaner).
@@ -58,7 +60,7 @@ For pre-Skylake images, the internal structure of the partitions is known, and a
 
 The LZMA modules are placed after the Huffman data (after the [LLUT](http://me.bios.io/ME_blob_format#LLUT_Breakdown)) and their positions are clearly saved inside the manifests, so they can easily be removed.
 
-The Huffman modules are more tricky to remove, as the module manifests does not contain directly an offset. The Huffman modules are indexed by "chunks": each "chunk" represent a fixed-size block (usually 1024 bytes of uncompressed data) and it contains an offset to the Huffman stream and a flag. Each module manifest contains the base loading address of that module (that sets the starting chunk, `first_chunk = (module_base - overall_base) / chunk_size`) and the uncompressed module size (that sets the number of chunks, `last_chunk = first_chunk + module_size / chunk_size`). Once we have the chunk indexes we can iterate over them and remove the corresponding chunks of compressed data.
+The Huffman modules are more tricky to remove, as the module manifests does not contain directly an offset. The Huffman modules are indexed by "chunks": each "chunk" represent a fixed-size block (usually 1024 bytes of uncompressed data) and it contains an offset to the Huffman stream and a flag. Each module manifest contains the base loading address of that module (that sets the starting chunk, `first_chunk = (module_base - overall_base) / chunk_size`) and the uncompressed module size (that sets the number of chunks, `last_chunk = first_chunk + module_size / chunk_size`). Once we have the chunk indexes we can construct a whitelist of unremovable blocks and remove the others.
 
 ## Why does it work? Aren't the partitions signed? How can you modify them?
 
@@ -90,7 +92,7 @@ And, by the way
 
 Before flashing the modified image you should understand the implications of such modification.
 First you should understand that this tool does not reimplements **anything**, it only wipes parts of a basic component of your processor, so keep in mind:
- * Currently `me_cleaner` **DOES NOT** works on platforms with Intel Boot Guard in `verified boot` mode, see [here](https://github.com/corna/me_cleaner/issues/6)
+ * Currently `me_cleaner` **DOES NOT** work on platforms with Intel Boot Guard in `verified boot` mode, see [here](https://github.com/corna/me_cleaner/issues/6)
  * Bricking is likely to happen! Even if this tool has been tested with your system, it does not mean that this modification is safe, everything could go wrong. Of course you can always restore the original firmware with an external programmer and unbrick it (you do have a backup, don't you?).
  * You are losing something. Intel ME doesn't only provides some services (that you may or may not use), but it also does low-level stuff (like silicon workaround, thermal management, fan control...). Most of these things are often controlled by something else, so they're not really needed, but who can be sure?
  * Usually the ME region is not writeable by software, therefore you usually need an external programmer
