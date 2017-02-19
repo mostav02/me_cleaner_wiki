@@ -34,9 +34,9 @@ After a while I updated me_cleaner to remove also most of the Huffman-compressed
  * ROMP (not always present)
  * BUP - Bringup (hardware initialization/configuration)
 
-The resulting code size (compressed) is ~55 kB (on my X220).
-
 Since the TXE firmwares are very similar to the ME ones, I also adapted me_cleaner to work on them.
+
+A month later I finally realized how to move the partitions; in this way the empty space before the FTPR partition can be recovered, and the final size of the Intel ME image is ~80 kB.
 
 ## How can I be sure that all the bad stuff is not in a ROM inside the CPU?
 
@@ -61,6 +61,12 @@ For pre-Skylake images, the internal structure of the partitions is known, and a
 The LZMA modules are placed after the Huffman data (after the [LLUT](http://me.bios.io/ME_blob_format#LLUT_Breakdown)) and their positions are clearly saved inside the manifests, so they can easily be removed.
 
 The Huffman modules are more tricky to remove, as the module manifests does not contain directly an offset. The Huffman modules are indexed by "chunks": each "chunk" represent a fixed-size block (usually 1024 bytes of uncompressed data) and it contains an offset to the Huffman stream and a flag. Each module manifest contains the base loading address of that module (that sets the starting chunk, `first_chunk = (module_base - overall_base) / chunk_size`) and the uncompressed module size (that sets the number of chunks, `last_chunk = first_chunk + module_size / chunk_size`). Once we have the chunk indexes we can construct a whitelist of unremovable blocks and remove the others.
+
+Moving a partition is not straightforward, as additional steps are needed:
+ * correct the partition's FPT offset ([bytes 0x8:0xc](http://me.bios.io/ME_blob_format#Partition_table_entry))
+ * fix the LLUT absolute offset (bytes 0xc:0x10 of the LLUT, minus bytes 0x9:0xb)
+ * adjust the absolute Huffman offset in the LLUT ([bytes 0x14:0x18](http://me.bios.io/ME_blob_format#LLUT_Breakdown))
+ * correct the offset of each Huffman chunk
 
 ## Why does it work? Aren't the partitions signed? How can you modify them?
 
@@ -91,12 +97,11 @@ And, by the way
 ## Cool, how can I apply it?
 
 Before flashing the modified image you should understand the implications of such modification.
-First you should understand that this tool does not reimplements **anything**, it only wipes parts of a basic component of your processor, so keep in mind:
+First you should understand that this tool does not reimplement **anything**, it only wipes parts of a basic component of your processor, so keep in mind:
  * Currently `me_cleaner` **DOES NOT** work on platforms with Intel Boot Guard in `verified boot` mode, see [here](https://github.com/corna/me_cleaner/issues/6)
  * Bricking is likely to happen! Even if this tool has been tested with your system, it does not mean that this modification is safe, everything could go wrong. Of course you can always restore the original firmware with an external programmer and unbrick it (you do have a backup, don't you?).
  * You are losing something. Intel ME doesn't only provides some services (that you may or may not use), but it also does low-level stuff (like silicon workaround, thermal management, fan control...). Most of these things are often controlled by something else, so they're not really needed, but who can be sure?
- * Usually the ME region is not writeable by software, therefore you usually need an external programmer
- * ~~Sometimes the integrated Intel NIC stops working after a cold boot, but it works after a warm boot~~ Seems to be fixed with 9e42ae0
+ * Often the ME region is not writeable by software, therefore you usually need an external programmer
 
 If you have a motherboard with a socketed ROM chip you can test me_cleaner on a spare chip and leave the original one untouched.
 
