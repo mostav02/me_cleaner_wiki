@@ -99,13 +99,11 @@ And, by the way
 Before flashing the modified image you should understand the implications of such modification.
 First you should understand that this tool does not reimplement **anything**, it only wipes parts of a basic component of your processor, so keep in mind:
  * Currently `me_cleaner` **DOES NOT** work on platforms with Intel Boot Guard in `verified boot` mode, see [here](https://github.com/corna/me_cleaner/issues/6)
- * Bricking is likely to happen! Even if this tool has been tested with your system, it does not mean that this modification is safe, everything could go wrong. Of course you can always restore the original firmware with an external programmer and unbrick it (you do have a backup, don't you?).
- * You are losing something. Intel ME doesn't only provides some services (that you may or may not use), but it also does low-level stuff (like silicon workaround, thermal management, fan control...). Most of these things are often controlled by something else, so they're not really needed, but who can be sure?
- * Often the ME region is not writeable by software, therefore you usually need an external programmer
+ * Even if this tool has been tested with your system, it does not mean that this modification is safe, so be prepared for a brick!
+ * Intel ME doesn't only provides some services (that you may or may not use), but it also does low-level stuff (like silicon workaround, thermal management, fan control...). Luckily, no user has reported any side effects so far.
+ * Often the ME region is not writeable by software: in these cases you need an external programmer to write the modified firmware.
 
-If you have a motherboard with a socketed ROM chip you can test me_cleaner on a spare chip and leave the original one untouched.
-
-In any case you should dump the original firmware and keep it in a safe place, just in case you need to restore it with an external programmer in case of brick.
+Even if it sounds dangerous, once you have a valid backup of your ROM and a way to reprogram it (external flasher, dual BIOS...), you should be safe.
 
 ## Ok, I'm not scared, I want to try it!
 
