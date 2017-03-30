@@ -100,7 +100,7 @@ Before flashing the modified image you should understand the implications of suc
 First you should understand that this tool does not reimplement **anything**, it only wipes parts of a basic component of your processor, so keep in mind:
  * Currently `me_cleaner` **DOES NOT** work on platforms with Intel Boot Guard in `verified boot` mode, see [here](https://github.com/corna/me_cleaner/issues/6)
  * Even if this tool has been tested with your system, it does not mean that this modification is safe, so be prepared for a brick!
- * Intel ME doesn't only provide some services (that you may or may not use), but it also does low-level stuff (like silicon workaround, thermal management, fan control...). Luckily, no user has reported any side effect so far.
+ * Intel ME doesn't only provide some services (that you may or may not use), but it also does low-level stuff (like silicon workaround, thermal management, fan control...). Luckily, no user has reported any side effect so far (as many of these features aren't used anymore or they are implemented by something else).
  * Often the ME region is not writeable by software: in these cases you need an external programmer to write the modified firmware.
 
 Even if it sounds dangerous, once you have a valid backup of your ROM and a way to reprogram it (external flasher, dual BIOS...), you should be safe.
