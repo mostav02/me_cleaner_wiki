@@ -17,7 +17,7 @@ If the lines `Intel ME Region Write Access` and `Intel ME Region Read Access` ar
 
 ## Neutralize Intel ME
 
-If you don't need to recover the space freed by me_cleaner just change the coreboot build option `CONFIG_USE_ME_CLEANER` to `y`, rebuild coreboot and flash it with the usual methods.
+If you don't need to recover the space freed by me_cleaner just change the coreboot build option `Strip down the Intel ME/TXE firmware` (`CONFIG_USE_ME_CLEANER`) to `y`, rebuild coreboot and flash it with the usual methods.
 
 ## ME neutralization and shrinking
 
