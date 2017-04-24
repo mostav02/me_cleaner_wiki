@@ -3,8 +3,8 @@ Please comment [here](https://github.com/corna/me_cleaner/issues/3) if me_cleane
 
 | PCH               | CPU               | ME   | SKU      | 250b2ec	 |
 |:-----------------:|:-----------------:|:----:|:--------:|:------------:|
-| Ibex Peak         | Nehalem           | 6.0  | Ignition | **WORKS** (1)|
-| Ibex Peak         | Nehalem           | 6.x  | 1.5/5 MB | **WORKS** (1)|
+| Ibex Peak         | Nehalem/Westmere  | 6.0  | Ignition | **WORKS** (1)|
+| Ibex Peak         | Nehalem/Westmere  | 6.x  | 1.5/5 MB | **WORKS** (1)|
 | Cougar Point      | Sandy Bridge      | 7.x  | 1.5/5 MB | **WORKS**    |
 | Panther Point     | Ivy Bridge        | 8.x  | 1.5/5 MB | **WORKS**    |
 | Lynx/Wildcat Point| Haswell/Broadwell | 9.x  | 1.5/5 MB | **WORKS**    |
