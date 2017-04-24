@@ -107,26 +107,7 @@ Even if it sounds dangerous, once you have a valid backup of your ROM and a way 
 
 ## Ok, I'm not scared, I want to try it!
 
-Great! You can follow [this](http://hardenedlinux.org/firmware/2016/11/17/neutralize_ME_firmware_on_sandybridge_and_ivybridge.html) guide if you want to try it.
-
-If you use [coreboot](https://www.coreboot.org/) you can instead enable it from the menuconfig: go in `Chipset` and select the option `Strip down the Intel ME/TXE firmware`, then flash the resulting `build/coreboot.rom` image with the usual methods.
-
-Before flashing you can check the validity of the modules hashes to reduce the possibility of bricking (Intel ME, pre-Skylake only) using `unhuffme`:
-
-Download the sources from https://io.netgarage.org/me/, build them and run
-
-     $ ./unhuffme <modified image>
-
-It should print the list of the modules in this format:
-
-     <name> <SHA-256 hash> <lzma, [MATCH] or incomplete>
-
-If `BUP` (always present) and `ROMP` (not always present) have:
- * `[MATCH]`: you're done, the module is intact
- * `incomplete`: the module has been modified and the stripped image **WILL** either brick your platform or go in the 30-min window. Check if the input image was valid and open an issue if necessary
- * `lzma`: run `lzcat mod/ROMP-*.mod.lzma | sha256sum` or `lzcat mod/BUP-*.mod.lzma | sha256sum` and check whether the computed hash match with the unhuffme's one. If `lzcat` returns `File format not recognized` it means that the corresponding module has been removed
-
-All the other modules should have either `lzma` or `incomplete`.
+Great! You can follow [this](https://github.com/corna/me_cleaner/wiki/How-to-apply-me_cleaner) guide if you want to try it.
 
 Please report the success on [#3](https://github.com/corna/me_cleaner/issues/3) (even if it's already listed in the [status page](https://github.com/corna/me_cleaner/wiki/me_cleaner-status)).
 
