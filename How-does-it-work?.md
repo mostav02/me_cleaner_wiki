@@ -76,13 +76,13 @@ This is the simplified structure of a partition header:
 
 As you can see the partition is not signed directly, instead all the modules are hashed and the modules manifests (that contain the hashes) are signed. This means that modify a module doesn't invalidate the signature, but only its hash.
 
-Luckily for us, Intel ME doesn't check all the hashes at once, but only when it needs to execute them. Moreover the system is allowed to boot after the execution of the first module (BUP).
+Luckily for us, Intel ME doesn't check all the hashes at once, but only when it needs to execute them. Moreover the 30-min watchdog that forcefully shuts off the system is disabled in the BUP module.
 
 Therefore Intel ME:
  * checks the partition signature: valid
  * finds the BUP module and checks its hash: valid
  * executes BUP
-  - at this point the system can boot correctly, without the 30-min window
+   * at this point the system can boot correctly, without the 30-min window
  * finds the following module (probably KERNEL) and checks its hash: **INVALID**
  * stops the execution
 
@@ -121,3 +121,11 @@ You can use `intelmetool` from the coreboot repository:
      $ sudo ./intelmetool -s
 
 On my platform (Thinkpad X220T with coreboot) it shows [this](https://gist.github.com/corna/d637a7c3279f41e9be65b43b673d54d3).
+
+The interesting lines are (in Skylake and newer some lines can differ, as less code is removed):
+ * `ME: FW Partition Table : OK` → the checksum of the FPT is correct
+ * `ME: Firmware Init Complete : NO` → the firmware init hasn't been completed
+ * `ME: Current Working State : Recovery` → anything but `Platform Disable Wait` (which means that the device will forcefully turn off in 30 mins) is OK here
+ * `ME: Error Code : Image Failure` → Intel ME had problems loading the firmware image
+ * `ME: Progress Phase : BUP Phase` → the initialization process is stuck at the bring-up phase
+ * `ME: Progress Phase State : M0 kernel load` → the initialization has been interrupted during the kernel loading
