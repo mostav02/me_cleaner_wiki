@@ -21,7 +21,7 @@ If you don't need to recover the space freed by me_cleaner just change the coreb
 
 ## ME neutralization and shrinking
 
-If you instead want to recover the extra ROM space (which is a considerable amount of space, from ~1 MB to ~5 MB, depending on the firmware type):
+If you instead want to recover the extra ROM space (which is a considerable amount of space, ~1 MB or ~5 MB, depending on the firmware type):
 
      $ ifdtool -f layout.txt original_dump.bin
      $ python me_cleaner.py -O modified_shrinked_image.bin -r original_dump.bin
