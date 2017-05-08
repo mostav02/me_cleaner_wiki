@@ -22,6 +22,7 @@ Download flashrom and build it (see [here](https://www.flashrom.org/Downloads) f
 
      $ wget https://download.flashrom.org/releases/flashrom-0.9.9.tar.bz2
      $ tar -xf flashrom-0.9.9.tar.bz2
+     $ cd flashrom-0.9.9/
      $ make
 
 Turn off the PC, disconnect it from the power supply and, if it has a removable battery, remove it. Locate the ROM chip on your board and connect it to the programmer; don't forget to pullup the /WP and /HOLD lines (especially if you've detached the chip from its socket).
@@ -59,7 +60,7 @@ Save the dump somewhere safe, in case something goes wrong.
 
 ## Neutralize Intel ME
 
-If you only want to neutralize Intel Me you can just use me_cleaner on it:
+If you only want to neutralize Intel ME you can just use me_cleaner on it:
 
      $ python me_cleaner.py -O modified_image.bin original_dump.bin
 
@@ -107,7 +108,7 @@ Don't forget to change CONFIG_CBFS_SIZE to increase the size of cbfs. Rebuild co
 
 ## Flash back the modified image
 
-Now that we have a stripped image (`modified_image.bin` for a deblobbed image, `modified_shrinked_image.bin` for a deblobbed and shrinked image) we can flash it back (and hope that everything works well). To flash it just connect again the programmer to the chip and run the same command used during the dump, just changing `-r` with `-w` and selecting the correct image:
+Now that we have a stripped image we can flash it back (and hope that everything works well). To flash it just connect again the programmer to the chip and run the same command used during the dump, just changing `-r` with `-w` and selecting the correct image:
 
      $ flashrom -p linux_spi:dev=/dev/spidev0.0,spispeed=10000 -c <CHIP MODEL> -w modified_image.bin
 
