@@ -76,7 +76,7 @@ If you want to recover the space freed by me_cleaner (for example, if you use co
 me_cleaner should print some output; copy the new ME region line
 
      The ME region can be reduced up to:
-      00003000:00017fff me
+      00003000:00019fff me
 
 into the file `layout.txt`, so that it changes from something like this
 
@@ -91,16 +91,26 @@ to something like this
 
 <pre>
 00000000:00000fff fd
-<b>00018000</b>:007fffff bios
-00003000:<b>00017fff</b> me
+<b>00020000</b>:007fffff bios
+00003000:<b>00019fff</b> me
 00001000:00002fff gbe
 </pre>
 
-Note that I've changed both the ME and the BIOS regions. Now run
+This correspond to moving from this layout
+
+![before](http://oi65.tinypic.com/10rn12d.jpg)
+
+to this one
+
+![after](http://oi67.tinypic.com/2nkrkoi.jpg)
+
+Note that I've changed both the ME and the BIOS regions, as the ending address of the ME region has changed (from 0x4fffff to 0x1ffff), but also the starting address of the BIOS region has changed (from 0x500000 to 0x20000, the byte after the end of the ME region).
+
+Now run
 
      $ ifdtool -n layout.txt modified_shrinked_image.bin
 
-modified_shrinked_image.bin.new contains now a valid ME image which occupies much less space than before (for example, for ME version 7, the ME region size went from 5 MB to 84 kB). You can now extract the descriptor and the ME image from modified_shrinked_image.bin.new and use them for the next build of coreboot (IFD_BIN_PATH and ME_BIN_PATH)
+modified_shrinked_image.bin.new contains now a valid ME image which occupies much less space than before (in this example the ME region size went from 5 MB to 116 kB). You can now extract the descriptor and the ME image from modified_shrinked_image.bin.new and use them for the next build of coreboot (IFD_BIN_PATH and ME_BIN_PATH)
 
      $ ifdtool -x modified_shrinked_image.bin.new
 
