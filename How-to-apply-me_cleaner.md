@@ -1,5 +1,7 @@
 # How to apply me_cleaner
 
+While using me_cleaner is easy (`python me_cleaner.py <firmware>`), flashing the modified firmware is not, as it is located in the same chip of the BIOS, which is not trivial to be flashed.
+
 There are two methods to apply me_cleaner to your platform:
  * External flashing (recommended)
  * Internal flashing
