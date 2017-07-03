@@ -71,7 +71,7 @@ Don't forget to change CONFIG_CBFS_SIZE to increase the size of cbfs. Rebuild co
 
 ##  It works!!
 
-Great! If you want to check the status of Intel ME you can use `intelmetool` in coreboot/util/intelmetool (note that, on kernels >= 4.9 you might need the `iomem=relaxed` option):
+Great! If you want to check the status of Intel ME you can use `intelmetool` in coreboot/util/intelmetool:
 
      $ cd coreboot/util/intelmetool
      $ make
@@ -84,6 +84,13 @@ The relevant lines are
 and (on pre-Skylake platforms)
 
      ME: Progress Phase State    : M0 kernel load
+
+If it shows an error like
+
+     Error mapping physical memory 0x..... [0x4000] ERRNO=1 Operation not permitted
+     Could not map MEI PCI device memory
+
+you just have to [run your kernel with the `iomem=relaxed` option](https://github.com/corna/me_cleaner/issues/30#issuecomment-301193328).
 
 ##  It doesn't work...
 
