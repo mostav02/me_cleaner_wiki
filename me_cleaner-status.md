@@ -17,7 +17,7 @@ Please comment [here](https://github.com/corna/me_cleaner/issues/3) if me_cleane
 | Bay Trail             | 1.x | 1.25/1.375/3 MB | UNTESTED     |
 | Braswell/Cherry Trail | 2.x | 1.375 MB             | **WORKS**    |
 
-Currently me_cleaner **DOES NOT WORK** on platforms with Intel Boot Guard set in Verified Boot - Immediate shutdown (FVE or FVME). If your platform is older than Haswell or it isn't a preassembled PC, you're OK, otherwise you should make sure that Intel Boot Guard isn't enabled on your board.
+Currently me_cleaner **DOES NOT WORK** on platforms with Intel Boot Guard set in Verified (+ Measured) Boot. Read [this](https://github.com/corna/me_cleaner/wiki/Intel-Boot-Guard) to learn more about Intel Boot Guard and its implications about _me_cleaner_
 
 (1) Currently it **DOESN'T WORK** with coreboot on Nehalem, see [here](https://github.com/corna/me_cleaner/issues/19)
 
