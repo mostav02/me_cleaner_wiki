@@ -2,14 +2,16 @@ Since me_cleaner modifies a very fundamental part of an Intel system, it is reas
 
 ## Sources
 
-The basic informations about Intel ME firmwares were provided by:
+The basic informations about Intel ME were provided by:
  * [me.bios.info](http://me.bios.io/ME_blob_format)
  * [Igor Skochinsky - Rootkit in your laptop - Breakpoint 2012](http://me.bios.io/images/c/ca/Rootkit_in_your_laptop.pdf)
  * [Igor Skochinsky - Intel ME Secrets - RECON 2014](https://recon.cx/2014/slides/Recon%202014%20Skochinsky.pdf)
+ * [Positive Technologies - Intel ME: The Way of the Static Analysis - TROOPERS17](https://www.troopers.de/downloads/troopers17/TR17_ME11_Static.pdf)
+ * [Ruan, Xiaoyu - Platform Embedded Security Technology Revealed - Apress](https://www.apress.com/us/book/9781430265719)
  * [me-tools](https://github.com/skochinsky/me-tools)
  * [MEAnalyzer](https://github.com/platomav/MEAnalyzer)
 
-Our work started when we found, on the coreboot Mailing List, a message from Trammel Hudson in which he shared his [recent discovers about Intel ME firmwares](https://www.coreboot.org/pipermail/coreboot/2016-September/082016.html).
+Our work started when we found, on the coreboot Mailing List, a message from Trammel Hudson in which he shared his [recent discovers about Intel ME firmware](https://www.coreboot.org/pipermail/coreboot/2016-September/082016.html).
 Then we tried by ourself and replicated the results: to make things simpler I created a Python script to modify the firmware automatically and we published it on the [coreboot Mailing List](https://www.coreboot.org/pipermail/coreboot/2016-November/082331.html) and later on [GitHub](https://github.com/corna/me_cleaner).
 
 ## What does this tool do?
@@ -34,18 +36,19 @@ After a while I updated me_cleaner to remove also most of the Huffman-compressed
  * ROMP (not always present)
  * BUP - Bringup (hardware initialization/configuration)
 
-Since the TXE firmwares are very similar to the ME ones, I also adapted me_cleaner to work on them.
+Since the TXE firmware is very similar to the ME one, I adapted me_cleaner to work on it.
 
 A month later I finally realized how to move the partitions; in this way the empty space before the FTPR partition can be recovered, and the final size of the Intel ME image is ~80 kB.
+
+In June 2017 I updated me_cleaner to adapt it to the changes introduced by ME 11 (Skylake and following), removing most of the modules from the newer Intel ME firmware images.
 
 ## How can I be sure that all the bad stuff is not in a ROM inside the CPU?
 
 We can never be sure about this, but, thanks to the [Igor's 2014 presentation](https://recon.cx/2014/slides/Recon%202014%20Skochinsky.pdf) (slide 18), we can suppose that the code inside the internal ROM is just the code responsible for the very basic initialization of Intel ME.
 
-## How does it work?
+## How does me_cleaner work?
 
-Since there isn't any official documentation of the Intel ME firmwares, a short explanation of how me_cleaner works is mandatory.
-At first it detects if the image is a "pure" ME image (magic **$FPT** at offset 0x10) or a full BIOS dump (magic **5a a5 f0 0f** at offset 0x10). If it is a "pure" ME image it uses the whole file as ME image, otherwise it finds the ME region by reading the values inside the Intel Flash Descriptor.
+First, it detects if the image is a "pure" ME image (magic **$FPT** at offset 0x10) or a full BIOS dump (magic **5a a5 f0 0f** at offset 0x10). If it is a "pure" ME image it uses the whole file as ME image, otherwise it finds the ME region by reading the values inside the Intel Flash Descriptor.
 
 Then it searches for the basic ME informations: presence of the FPT region, version of the firmware, number of partitions and offset and size of the FTPR partition. Now it has all the informations it needs, and it can start the "cleaning" process by:
  * dumping the original FTPR entry in the FPT
@@ -54,9 +57,9 @@ Then it searches for the basic ME informations: presence of the FPT region, vers
  * removing the EFFS presence flag
  * correcting the FPT checksum
 
-Now the ME image contains only the FTPR partition, as every other partition has been overwritten by 0xff.
+Now the ME image contains only the FTPR partition, as every other partition has been overwritten by 0xff; it's time to dig deeper into the FTPR partition and remove as many modules as possible:
 
-For pre-Skylake images, the internal structure of the partitions is known, and also most of the modules can be removed.
+### ME versions from 6.0 (Nehalem) to 10.x (Broadwell)
 
 The LZMA modules are placed after the Huffman data (after the [LLUT](http://me.bios.io/ME_blob_format#LLUT_Breakdown)) and their positions are clearly saved inside the manifests, so they can easily be removed.
 
@@ -68,7 +71,15 @@ Moving a partition is not straightforward, as additional steps are needed:
  * adjust the absolute Huffman offset in the LLUT ([bytes 0x14:0x18](http://me.bios.io/ME_blob_format#LLUT_Breakdown))
  * correct the offset of each Huffman chunk
 
+### ME versions from 11.x (Skylake)
+
+Starting from ME version 11 the internal structure of the partitions has changed substantially. The modules are now indexed in the CPD, the Code Partition Directory, where the partition manifest (the same partition manifest of the previous ME versions), the modules metadata and data are listed. To remove a module (uncompressed, Huffman or LZMA) it's sufficient to look for its offset in the CPD and remove the data from that offset to the following one.
+
+Since there isn't a Huffman LLUT anymore (the Huffman-compressed data is now in a single stream, one for each module), the relocation of a partition is trivial, as it is sufficient to move the data and correct the offset in the FPT.
+
 ## Why does it work? Aren't the partitions signed? How can you modify them?
+
+### ME versions from 6.0 (Nehalem) to 10.x (Broadwell)
 
 This is the simplified structure of a partition header:
 
@@ -85,6 +96,14 @@ Therefore Intel ME:
    * at this point the system can boot correctly, without the 30-min window
  * finds the following module (probably KERNEL) and checks its hash: **INVALID**
  * stops the execution
+
+### ME versions from 11.x (Skylake)
+
+With ME 11 things have changed, but the signing scheme is more or less the same; here's the integrity scheme (from [Positive Technologies - Intel ME: The Way of the Static Analysis - TROOPERS17](https://www.troopers.de/downloads/troopers17/TR17_ME11_Static.pdf)):
+
+![ME11 Partition Structure](http://i67.tinypic.com/2gublo0.png)
+
+As you can see, things are a bit more complex but the overall concept is the same: one RSA signature over the hash chains of the modules. As before, the hashes are not checked all at once but only when needed, allowing us to remove some modules without problem. Unfortunately it seems that the hashes of the modules `rbe`, `bup`, `kernel` and `syslib` are checked together, increasing the number of the fundamental modules to four.
 
 ## But I still don't trust you
 
