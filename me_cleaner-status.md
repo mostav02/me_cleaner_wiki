@@ -9,7 +9,7 @@ Please comment [here](https://github.com/corna/me_cleaner/issues/3) if me_cleane
 | Panther Point     | Ivy Bridge        | 8.x  | 1.5/5 MB | **WORKS**    |
 | Lynx/Wildcat Point| Haswell/Broadwell | 9.x  | 1.5/5 MB | **WORKS**    |
 | Wildcat  Point LP | Broadwell Mobile	| 10.0 | 1.5/5 MB | **WORKS**    |
-| Sunrise Point     | Skylake/Kabylake	| 11.x | CON/COR  | **WORKS** (2)|
+| Sunrise Point     | Skylake/Kabylake	| 11.x | CON/COR  | **WORKS**    |
 | Union Point       | Kabylake	        | 11.6 | CON/COR  | UNTESTED     |
 
 | SoC                   | TXE | SKU                  | 250b2ec      |
@@ -20,5 +20,3 @@ Please comment [here](https://github.com/corna/me_cleaner/issues/3) if me_cleane
 Currently me_cleaner **DOES NOT WORK** on platforms with Intel Boot Guard set in Verified (+ Measured) Boot. Read [this](https://github.com/corna/me_cleaner/wiki/Intel-Boot-Guard) to learn more about Intel Boot Guard and its implications about _me_cleaner_
 
 (1) Currently it **DOESN'T WORK** with coreboot on Nehalem, see [here](https://github.com/corna/me_cleaner/issues/19)
-
-(2) Modules are not yet removed from versions >= 11 (Skylake and following)
