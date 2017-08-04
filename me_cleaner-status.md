@@ -1,7 +1,7 @@
 # Current status of me_cleaner
 Please comment [here](https://github.com/corna/me_cleaner/issues/3) if me_cleaner works on your device (even if it is already listed as working)
 
-| PCH               | CPU               | ME   | SKU      | 250b2ec	 |
+| PCH               | CPU               | ME   | SKU      | Status	 |
 |:-----------------:|:-----------------:|:----:|:--------:|:------------:|
 | Ibex Peak         | Nehalem/Westmere  | 6.0  | Ignition | **WORKS** (1)|
 | Ibex Peak         | Nehalem/Westmere  | 6.x  | 1.5/5 MB | **WORKS** (1)|
