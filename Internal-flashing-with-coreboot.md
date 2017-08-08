@@ -19,7 +19,7 @@ If the lines `Intel ME Region Write Access` and `Intel ME Region Read Access` ar
 
 If you don't need to recover the space freed by me_cleaner just change the coreboot build option `Strip down the Intel ME/TXE firmware` (`CONFIG_USE_ME_CLEANER`) to `y`, rebuild coreboot and flash it with the usual methods.
 
-## Neutralize Intel ME and shrink it
+## Neutralize and shrink Intel ME
 
 If you instead want to recover the extra ROM space (which is a considerable amount of space, ~1 MB or ~5 MB, depending on the firmware type):
 
