@@ -76,8 +76,8 @@ me_cleaner should print some output; note the lines
 
 ```
 Modifying the regions of the extracted descriptor...
- 00003000:004fffff me   --> 00003000:00017fff me
- 00500000:007fffff bios --> 00018000:007fffff bios
+ 00003000:004fffff me   --> 00003000:0001ffff me
+ 00500000:007fffff bios --> 00020000:007fffff bios
 ```
 
 This means that _me_cleaner_ has modified the original descriptor with this layout
