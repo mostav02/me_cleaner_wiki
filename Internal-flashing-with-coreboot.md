@@ -19,55 +19,34 @@ If the lines `Intel ME Region Write Access` and `Intel ME Region Read Access` ar
 
 If you don't need to recover the space freed by me_cleaner just change the coreboot build option `Strip down the Intel ME/TXE firmware` (`CONFIG_USE_ME_CLEANER`) to `y`, rebuild coreboot and flash it with the usual methods.
 
-## ME neutralization and shrinking
+## Neutralize Intel ME and shrink it
 
 If you instead want to recover the extra ROM space (which is a considerable amount of space, ~1 MB or ~5 MB, depending on the firmware type):
 
-     $ ifdtool -f layout.txt original_dump.bin
-     $ python me_cleaner.py -O modified_shrinked_image.bin -r original_dump.bin
+     $ python me_cleaner.py -r -t -d -O out.bin -D ifd_shrinked.bin -M me_shrinked.bin original_dump.bin
 
-me_cleaner should print some output; copy the new ME region line
+me_cleaner should print some output; note the lines
 
-     The ME region can be reduced up to:
-      00003000:00019fff me
+```
+Modifying the regions of the extracted descriptor...
+ 00003000:004fffff me   --> 00003000:00017fff me
+ 00500000:007fffff bios --> 00018000:007fffff bios
+```
 
-into the file `layout.txt`, so that it changes from something like this
-
-<pre>
-00000000:00000fff fd
-<b>00500000</b>:007fffff bios
-00003000:<b>004fffff</b> me
-00001000:00002fff gbe
-</pre>
-
-to something like this
-
-<pre>
-00000000:00000fff fd
-<b>00020000</b>:007fffff bios
-00003000:<b>00019fff</b> me
-00001000:00002fff gbe
-</pre>
-
-This correspond to moving from this layout
+This means that _me_cleaner_ has modified the original descriptor with this layout
 
 ![before](http://oi65.tinypic.com/10rn12d.jpg)
 
-to this one
+to this new one, where the BIOS region is 4.9 MB bigger than before.
 
 ![after](http://oi67.tinypic.com/2nkrkoi.jpg)
 
-Note that I've changed both the ME and the BIOS regions, as the ending address of the ME region has changed (from 0x4fffff to 0x1ffff), but also the starting address of the BIOS region has changed (from 0x500000 to 0x20000, the byte after the end of the ME region).
+Three files should have been generated:
+ * `out.bin`, a flashable full image with the original layout (which we don't need)
+ * `ifd_shrinked.bin`, an Intel Flash Descriptor with the new layout
+ * `me_shrinked.bin`, a modified Intel ME image, truncated to fit in the ME region of the new layout
 
-Now run
-
-     $ ifdtool -n layout.txt modified_shrinked_image.bin
-
-modified_shrinked_image.bin.new contains now a valid ME image which occupies much less space than before (for example, for ME version 7, the ME region size went from ~5 MB to ~84 kB). You can now extract the descriptor and the ME image from modified_shrinked_image.bin.new and use them for the next build of coreboot (IFD_BIN_PATH and ME_BIN_PATH)
-
-     $ ifdtool -x modified_shrinked_image.bin.new
-
-Don't forget to change CONFIG_CBFS_SIZE to increase the size of cbfs. Rebuild coreboot with the new options and files and you're ready to go.
+Rebuild coreboot selecting `descriptor_shrinked.bin` as `IFD_BIN_PATH`, `me_shrinked.bin` as `ME_BIN_PATH` and increasing `CBFS_SIZE` accordingly and flash the resulting image.
 
 ##  It works!!
 
