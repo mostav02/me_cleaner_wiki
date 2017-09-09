@@ -7,6 +7,7 @@ The basic informations about Intel ME were provided by:
  * [Igor Skochinsky - Rootkit in your laptop - Breakpoint 2012](http://me.bios.io/images/c/ca/Rootkit_in_your_laptop.pdf)
  * [Igor Skochinsky - Intel ME Secrets - RECON 2014](https://recon.cx/2014/slides/Recon%202014%20Skochinsky.pdf)
  * [Positive Technologies - Intel ME: The Way of the Static Analysis - TROOPERS17](https://www.troopers.de/downloads/troopers17/TR17_ME11_Static.pdf)
+ * [Positive Technologies -  Disabling Intel ME 11 via undocumented mode](http://blog.ptsecurity.com/2017/08/disabling-intel-me.html)
  * [Ruan, Xiaoyu - Platform Embedded Security Technology Revealed - Apress](https://www.apress.com/us/book/9781430265719)
  * [me-tools](https://github.com/skochinsky/me-tools)
  * [MEAnalyzer](https://github.com/platomav/MEAnalyzer)
@@ -42,9 +43,11 @@ A month later I finally realized how to move the partitions; in this way the emp
 
 In June 2017 I updated me_cleaner to adapt it to the changes introduced by ME 11 (Skylake and following), removing most of the modules from the newer Intel ME firmware images.
 
+Thanks to the work of [Positive Technologies](https://www.ptsecurity.com), in August 2017 a new way of [disabling Intel ME has been found](http://blog.ptsecurity.com/2017/08/disabling-intel-me.html): it appears that Intel put a "kill-switch" for Intel ME in the PCHSTRP (the configuration section of the Flash Descriptor) for the U.S. government's High Assurance Platform (HAP) program. This bit (for ME >= 11) and the MeAltDisable bit (for ME < 11, discovered by Igor Skochinsky) gave us a new way to disable Intel ME.
+
 ## How can I be sure that all the bad stuff is not in a ROM inside the CPU?
 
-We can never be sure about this, but, thanks to the [Igor's 2014 presentation](https://recon.cx/2014/slides/Recon%202014%20Skochinsky.pdf) (slide 18), we can suppose that the code inside the internal ROM is just the code responsible for the very basic initialization of Intel ME.
+We can never be sure about this, but, thanks to the [Igor's 2014 presentation](https://recon.cx/2014/slides/Recon%202014%20Skochinsky.pdf) (slide 18), we can suppose that the code inside the internal ROM is just the code responsible for the very basic initialization of Intel ME, plus some low-level libraries).
 
 ## How does me_cleaner work?
 
@@ -57,7 +60,7 @@ Then it searches for the basic ME informations: presence of the FPT region, vers
  * removing the EFFS presence flag
  * correcting the FPT checksum
 
-Now the ME image contains only the FTPR partition, as every other partition has been overwritten by 0xff; it's time to dig deeper into the FTPR partition and remove as many modules as possible:
+Now the ME image contains only the FTPR partition, as every other partition has been overwritten by 0xff; it's time to dig deeper into the FTPR partition and remove as many modules as possible.
 
 ### ME versions from 6.0 (Nehalem) to 10.x (Broadwell)
 
@@ -76,6 +79,10 @@ Moving a partition is not straightforward, as additional steps are needed:
 Starting from ME version 11 the internal structure of the partitions has changed substantially. The modules are now indexed in the CPD, the Code Partition Directory, where the partition manifest (the same partition manifest of the previous ME versions), the modules metadata and data are listed. To remove a module (uncompressed, Huffman or LZMA) it's sufficient to look for its offset in the CPD and remove the data from that offset to the following one.
 
 Since there isn't a Huffman LLUT anymore (the Huffman-compressed data is now in a single stream, one for each module), the relocation of a partition is trivial, as it is sufficient to move the data and correct the offset in the FPT.
+
+### Soft-disable
+
+When the `-S` option has been passed, _me_cleaner_ also sets the HAP (for ME >= 11) or MeAltDisable (for ME < 11) bit, which ask Intel ME to disable itself after the hardware initialization.
 
 ## Why does it work? Aren't the partitions signed? How can you modify them?
 
@@ -119,7 +126,7 @@ Before flashing the modified image you should understand the implications of suc
 First you should understand that this tool does not reimplement **anything**, it only wipes parts of a basic component of your processor, so keep in mind:
  * Currently `me_cleaner` **DOES NOT** work on platforms with Intel Boot Guard in `verified boot` mode, see [here](https://github.com/corna/me_cleaner/issues/6)
  * Even if this tool has been tested with your system, it does not mean that this modification is safe, so be prepared for a brick!
- * Intel ME doesn't only provide some services (that you may or may not use), but it also does low-level stuff (like silicon workaround, thermal management, fan control...). Luckily, no user has reported any side effect so far (as many of these features aren't used anymore or they are implemented by something else).
+ * Intel ME doesn't only provide some services (that you may or may not use), but it also does low-level stuff (like silicon workaround, thermal management, fan control...). Luckily, no user has reported any side effect so far (as many of these features aren't used anymore, they are implemented by something else or they are executed in the modules not removed by _me_cleaner_).
  * Often the ME region is not writeable by software: in these cases you need an external programmer to write the modified firmware.
 
 Even if it sounds dangerous, once you have a valid backup of your ROM and a way to reprogram it (external flasher, dual BIOS...), you should be safe.
