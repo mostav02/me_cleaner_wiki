@@ -82,7 +82,7 @@ Since there isn't a Huffman LLUT anymore (the Huffman-compressed data is now in 
 
 ### Soft-disable
 
-When the `-S` option has been passed, _me_cleaner_ also sets the HAP (for ME >= 11) or MeAltDisable (for ME < 11) bit, which ask Intel ME to disable itself after the hardware initialization.
+With the `-S`/`-s` options, _me_cleaner_ sets the HAP (for ME >= 11) or MeAltDisable (for ME < 11) bit, which ask Intel ME to disable itself after the hardware initialization.
 
 ## Why does it work? Aren't the partitions signed? How can you modify them?
 
