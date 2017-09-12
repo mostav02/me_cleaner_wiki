@@ -43,7 +43,7 @@ A month later I finally realized how to move the partitions; in this way the emp
 
 In June 2017 I updated me_cleaner to adapt it to the changes introduced by ME 11 (Skylake and following), removing most of the modules from the newer Intel ME firmware images.
 
-Thanks to the work of [Positive Technologies](https://www.ptsecurity.com), in August 2017 a new way of [disabling Intel ME has been found](http://blog.ptsecurity.com/2017/08/disabling-intel-me.html): it appears that Intel put a "kill-switch" for Intel ME in the PCHSTRP (the configuration section of the Flash Descriptor) for the U.S. government's High Assurance Platform (HAP) program. This bit (for ME >= 11) and the MeAltDisable bit (for ME < 11, discovered by Igor Skochinsky) gave us a new way to disable Intel ME.
+Thanks to the work of [Positive Technologies](https://www.ptsecurity.com), in August 2017 a new way of [disabling Intel ME has been found](http://blog.ptsecurity.com/2017/08/disabling-intel-me.html): it appears that Intel put a "kill-switch" for Intel ME in the PCHSTRP (the configuration section of the Flash Descriptor) for the U.S. government's High Assurance Platform (HAP) program. This bit (for ME >= 11) and the MeAltDisable bit (for ME < 11, discovered by Igor Skochinsky) gave us [a new way to disable Intel ME](https://github.com/corna/me_cleaner/wiki/HAP-AltMeDisable-bit).
 
 ## How can I be sure that all the bad stuff is not in a ROM inside the CPU?
 
@@ -146,12 +146,18 @@ You can use `intelmetool` from the coreboot repository:
      $ make
      $ sudo ./intelmetool -s
 
-On my platform (Thinkpad X220T with coreboot) it shows [this](https://gist.github.com/corna/d637a7c3279f41e9be65b43b673d54d3).
+On my platform (Thinkpad X220T with coreboot) it shows [this](https://gist.github.com/corna/d637a7c3279f41e9be65b43b673d54d3) (without the `-s`/`-S` options) or [this](https://gist.github.com/corna/6d8a24fdaca1afd0ae2a84ecde4573dd) (with the `-S` option).
 
-The interesting lines are (in Skylake and newer some lines can differ, as less code is removed):
+The interesting lines are:
  * `ME: FW Partition Table : OK` → the checksum of the FPT is correct
  * `ME: Firmware Init Complete : NO` → the firmware init hasn't been completed
  * `ME: Current Working State : Recovery` → anything but `Platform Disable Wait` (which means that the device will forcefully turn off in 30 mins) is OK here
- * `ME: Error Code : Image Failure` → Intel ME had problems loading the firmware image
  * `ME: Progress Phase : BUP Phase` → the initialization process is stuck at the bring-up phase
+
+With the `-s`/`-S` options:
+ * `ME: Error Code : No Error` → Self-explanatory
+ * `ME: Progress Phase State : Check to see if straps say ME DISABLED` → Intel ME has been disabled
+
+otherwise:
+ * `ME: Error Code : Image Failure` → Intel ME had problems loading the firmware image
  * `ME: Progress Phase State : M0 kernel load` → the initialization has been interrupted during the kernel loading
