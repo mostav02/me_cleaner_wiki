@@ -16,4 +16,4 @@ Make your choice:
    * [with coreboot](https://github.com/corna/me_cleaner/wiki/Internal-flashing-with-coreboot)
    * [with OEM firmware](https://github.com/corna/me_cleaner/wiki/Internal-flashing-with-OEM-firmware)
 
-As a reference, you should take a look at [this guide](https://hardenedlinux.github.io/firmware/2016/11/17/neutralize_ME_firmware_on_sandybridge_and_ivybridge.html) where an external programmer (Raspberry Pi) is used on a Lenovo X220 with coreboot.
+As a reference, you should take a look at [this guide](https://github.com/corna/me_cleaner/wiki/me_cleaner-on-a-MSI-H110M-ECO) (external programmer on a MSI H110M ECO) or at [this one](https://hardenedlinux.github.io/firmware/2016/11/17/neutralize_ME_firmware_on_sandybridge_and_ivybridge.html) (external programmer on a Lenovo X220 with coreboot).
