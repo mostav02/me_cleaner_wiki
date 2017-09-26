@@ -16,4 +16,9 @@ Make your choice:
    * [with coreboot](https://github.com/corna/me_cleaner/wiki/Internal-flashing-with-coreboot)
    * [with OEM firmware](https://github.com/corna/me_cleaner/wiki/Internal-flashing-with-OEM-firmware)
 
-As a reference, you should take a look at [this guide](https://github.com/corna/me_cleaner/wiki/me_cleaner-on-a-MSI-H110M-ECO) (external programmer on a MSI H110M ECO) or at [this one](https://hardenedlinux.github.io/firmware/2016/11/17/neutralize_ME_firmware_on_sandybridge_and_ivybridge.html) (external programmer on a Lenovo X220 with coreboot).
+As reference, you can also take a look at these guides:
+ * External flashing
+   * [MSI H110M ECO (OEM firmware)](https://github.com/corna/me_cleaner/wiki/me_cleaner-on-a-MSI-H110M-ECO)
+   * [Lenovo Thinkpad X220 (coreboot)](https://hardenedlinux.github.io/firmware/2016/11/17/neutralize_ME_firmware_on_sandybridge_and_ivybridge.html)
+ * Internal flashing with OEM firmware
+   * [Asus H81M-D](https://github.com/corna/me_cleaner/issues/62)
