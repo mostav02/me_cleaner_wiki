@@ -10,6 +10,8 @@ The original firmware can be obtained in two ways:
  * Dumped from the PC with the flashing tool (as they often offer a way to "backup" the current firmware)
  * Downloaded from the vendor's website
 
+However the firmware on the vendor's website is usually a generic firmware, which doesn't contain things like MAC address of your integrated ethernet controller and serial code.
+
 ## Check the format of the original firmware
 
 _me_cleaner_ needs a plain dump of the firmware (1:1 copy of the flash content, often called _.bin_ or _.rom_ files), while the vendor's tools sometimes work in different formats. To check whether the obtained firmware is in the correct format you can use coreboot's `ifdtool`.
