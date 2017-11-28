@@ -28,6 +28,10 @@ It should print something like [this](https://gist.github.com/corna/66322fb938de
 
 If not it means that either the firmware is corrupted or it's not in the "plain" format. The vendors sometimes offer  a way to convert their firmware to the standard "plain" format, check their website or Google it.
 
+Sometimes `ifdtool` prints a resonable output even in case of an invalid image (like [this](https://gist.github.com/corna/e7d08c23049a325ef3222ac765d1c5cf)); to exclude these cases you should check at least that:
+ * The region sizes in the [`FLREGn` section](https://gist.github.com/corna/66322fb938dedd93d2aaa1d59b27341d#file-gistfile1-txt-L147-L157) make sense (4 KiB for the descriptor, some MiB for the BIOS, some MiB for the ME, some KiB for the GbE, if present)
+ * Each region in [`FLMSTRn` section](https://gist.github.com/corna/66322fb938dedd93d2aaa1d59b27341d#file-gistfile1-txt-L197-L235) has RW access at least to itself
+
 ## Check the validity of the original firmware
 
 Ok, now we have a valid firmware in the correct format, it's time to check if it contains a ME image. Run
