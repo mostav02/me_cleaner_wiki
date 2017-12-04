@@ -54,7 +54,7 @@ Great! If you want to check the status of Intel ME you can use `intelmetool` in 
 
      $ cd coreboot/util/intelmetool
      $ make
-     # ./intelmetool -s
+     # ./intelmetool -m
 
 The relevant lines are
 
