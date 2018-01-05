@@ -2,6 +2,7 @@
 
 The prerequisites for the external flashing are:
  * A Linux board with a SPI interface (Raspberry Pi, Beaglebone, C.H.I.P, ...) or a SPI programmer
+   * Alternatively you can use a USB SPI programmer, like the CH341A or the FT232H/FT2232H/FT4232H: in that case, replace the `-p linux_spi,...` option in _flashrom_ with the corresponding driver (see [this page](https://www.flashrom.org/Supported_hardware#USB_Devices) for more info).
    * You could also use an Arduino, but it's not covered bu this guide and it's definetly harder
  * A way to connect the ROM chip with the board (DIP/SOIC clip, SMD clips, socket in case of a detachable chip)
  * Good knowledge of the SPI chips and programmers
@@ -18,12 +19,13 @@ If the chip is socketed (which happens quite often in the desktop boards), you c
 
 ## Dump of the original firmware
 
-Download flashrom and build it (see [here](https://www.flashrom.org/Downloads) for more info):
+If you have flashrom in your distribution's repositories you can download it from there (for example on Raspbian, you can just get it with `sudo apt-get install flashrom`, otherwise you can download and build it (see [here](https://www.flashrom.org/Downloads) for more info):
 
      $ wget https://download.flashrom.org/releases/flashrom-0.9.9.tar.bz2
      $ tar -xf flashrom-0.9.9.tar.bz2
      $ cd flashrom-0.9.9/
      $ make
+     $ sudo make install
 
 Turn off the PC, disconnect it from the power supply and, if it has a removable battery, remove it. Locate the ROM chip on your board and connect it to the programmer; don't forget to pullup the /WP and /HOLD lines (especially if you've detached the chip from its socket).
 
@@ -46,7 +48,7 @@ Just to be extra sure, you can also check if the dumped binary is correct. Downl
 
 Now check if the dumped image has the correct structure:
 
-     $ ifdtool -d original_dump.bin
+     $ ./ifdtool -d original_dump.bin
 
 It should print something like [this](https://gist.github.com/corna/66322fb938dedd93d2aaa1d59b27341d).
 
