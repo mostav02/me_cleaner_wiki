@@ -1,5 +1,7 @@
 Since me_cleaner modifies a very fundamental part of an Intel system, it is reasonable to be worried about such modification. Here I'm explaining what this script does, and how.
 
+You can also watch my talk with Igor Skochinsky at the 34C3, [Intel ME: Myths and reality](https://media.ccc.de/v/34c3-8782-intel_me_myths_and_reality) (the me_cleaner part starts at min 30:00).
+
 ## Sources
 
 The basic informations about Intel ME were provided by:
