@@ -16,11 +16,12 @@ Make your choice:
    * [with coreboot](https://github.com/corna/me_cleaner/wiki/Internal-flashing-with-coreboot)
    * [with OEM firmware](https://github.com/corna/me_cleaner/wiki/Internal-flashing-with-OEM-firmware)
 
-As reference, you can also take a look at these guides:
+As reference, you can also take a look at these user-contributed guides:
  * External flashing
    * [MSI H110M ECO (OEM firmware)](https://github.com/corna/me_cleaner/wiki/me_cleaner-on-a-MSI-H110M-ECO)
    * [Panasonic CF-AX3 Ultrabook (OEM firmware)](https://wiki.gentoo.org/wiki/Sakaki%27s_EFI_Install_Guide/Disabling_the_Intel_Management_Engine)
    * [Asus Z170 Pro Gaming (OEM firmware)](https://github.com/corna/me_cleaner/issues/98)
+   * [Lenovo Y70 (OEM firmware)](https://github.com/ivanB1975/y70_mecleaner/wiki/howto)
    * [Lenovo Thinkpad X220 (coreboot)](https://hardenedlinux.github.io/firmware/2016/11/17/neutralize_ME_firmware_on_sandybridge_and_ivybridge.html)
  * Internal flashing with OEM firmware
    * [Asus H81M-D](https://github.com/corna/me_cleaner/issues/62)
