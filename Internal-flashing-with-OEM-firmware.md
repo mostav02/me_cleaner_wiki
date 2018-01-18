@@ -44,9 +44,9 @@ If it passes all the checks like [this one](https://gist.github.com/corna/92df16
 
 Now just use me_cleaner on the firmware:
 
-     $ python me_cleaner.py -O modified_firmware.bin original_firmware.bin
+     $ python me_cleaner.py -S -O modified_firmware.bin original_firmware.bin
 
-This will create a modified_firmware.bin file which contains the untouched OEM BIOS and a modified ME image.
+This will create a modified_firmware.bin file which contains the untouched OEM BIOS, a modified ME image and a flash descriptor with the HAP/AltMeDisable bit set.
 
 ## Flash the modified image
 
@@ -84,4 +84,4 @@ you just have to [run your kernel with the `iomem=relaxed` option](https://githu
 ##  It doesn't work...
 
 Don't panic! Just use an external programmer (or any recovery solution you have) to flash back the original:
-everything should be now exactly as before, and the system should boot again. If you really want to have a deblobbed Intel ME firmware you can open an issue on GitHub and look for possible solutions.
+everything should be now exactly as before, and the system should boot again. If you really want to have a deblobbed Intel ME firmware you can take a look at [this page](https://github.com/corna/me_cleaner/wiki/HAP-AltMeDisable-bit) and, if nothing works, open an issue on GitHub and look for possible solutions.
