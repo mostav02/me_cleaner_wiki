@@ -77,4 +77,4 @@ Don't panic! Just use an external programmer to flash back a working firmware:
 
      $ flashrom -p linux_spi:dev=/dev/spidev0.0,spispeed=10000 -c <CHIP MODEL> -w dump.bin
 
-Everything should be now exactly as before, and the system should boot again. If you really want to have a deblobbed Intel ME firmware you can open an issue on GitHub and look for possible solutions.
+Everything should be now exactly as before, and the system should boot again. If you really want to have a deblobbed Intel ME firmware you can take a look at [this page](https://github.com/corna/me_cleaner/wiki/HAP-AltMeDisable-bit) and, if nothing works, open an issue on GitHub and look for possible solutions.
