@@ -68,15 +68,15 @@ Save the dump somewhere safe, in case something goes wrong.
 
 If you only want to neutralize Intel ME you can just use me_cleaner on it:
 
-     $ python me_cleaner.py -O modified_image.bin original_dump.bin
+     $ python me_cleaner.py -S -O modified_image.bin original_dump.bin
 
-This will create an image with a stripped ME.
+This will create an image with a stripped ME and the HAP/AltMeDisable bit set.
 
 ## Neutralize and shrink Intel ME (useful only for coreboot)
 
 If you instead want to recover the extra ROM space (which is a considerable amount of space, ~1 MB or ~5 MB, depending on the firmware type):
 
-     $ python me_cleaner.py -r -t -d -O out.bin -D ifd_shrinked.bin -M me_shrinked.bin original_dump.bin
+     $ python me_cleaner.py -S -r -t -d -O out.bin -D ifd_shrinked.bin -M me_shrinked.bin original_dump.bin
 
 me_cleaner should print some output; note the lines
 
