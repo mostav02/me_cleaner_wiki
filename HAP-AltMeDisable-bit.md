@@ -10,6 +10,6 @@ A new way to disable Intel ME has been discovered by [Positive Technologies](htt
 
 _me_cleaner_ sets this HAP/AltMeDisable bit when the `-s` (enable only the kill-switch, but don't remove the extra code from the firmware) or the `-S` (enable the kill-switch **and** remove the extra code from the firmware) are passed.
 
-Now the question is: which mode should I use? It depends... Some BIOS seem to work better with the code removal mode, some others with the kill-switch, it's up to you to test which one works better on your platform. Usually, if one mode works, the other follows (but may introduce delays in the boot): my suggestion is to try first without any `-s`/`-S` flags and:
- * if it doesn't work, try with `-s`
- * if it works (and you want to dig deeper) you can try with the `-S` option
+Now the question is: which mode should I use? It depends... Some BIOS seem to work better with the code removal mode, some others with the kill-switch, it's up to you to test which one works better on your platform. Usually, if one mode works, the other follows (but may introduce delays in the boot).
+
+You should try first with `-S` (code removal + HAP/AltMeDisable bit) and, if it doesn't work, fallback to no arguments (code removal only) and, as last chance, `-s` (HAP/AltMeDisable bit only).
