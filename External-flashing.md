@@ -99,7 +99,7 @@ Three files should have been generated:
  * `ifd_shrinked.bin`, an Intel Flash Descriptor with the new layout
  * `me_shrinked.bin`, a modified Intel ME image, truncated to fit in the ME region of the new layout
 
-Rebuild coreboot selecting `descriptor_shrinked.bin` as `IFD_BIN_PATH`, `me_shrinked.bin` as `ME_BIN_PATH` and increasing `CBFS_SIZE` accordingly and flash the resulting image.
+Rebuild coreboot selecting `ifd_shrinked.bin` as `IFD_BIN_PATH`, `me_shrinked.bin` as `ME_BIN_PATH` and increasing `CBFS_SIZE` accordingly and flash the resulting image.
 
 ## Flash back the modified image
 
