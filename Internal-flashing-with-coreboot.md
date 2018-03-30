@@ -50,26 +50,7 @@ Rebuild coreboot selecting `ifd_shrinked.bin` as `IFD_BIN_PATH`, `me_shrinked.bi
 
 ##  It works!!
 
-Great! If you want to check the status of Intel ME you can use `intelmetool` in coreboot/util/intelmetool:
-
-     $ cd coreboot/util/intelmetool
-     $ make
-     # ./intelmetool -m
-
-The relevant lines are
-
-     ME: Error Code              : Image Failure
-
-and (on pre-Skylake platforms)
-
-     ME: Progress Phase State    : M0 kernel load
-
-If it shows an error like
-
-     Error mapping physical memory 0x..... [0x4000] ERRNO=1 Operation not permitted
-     Could not map MEI PCI device memory
-
-you just have to [run your kernel with the `iomem=relaxed` option](https://github.com/corna/me_cleaner/issues/30#issuecomment-301193328).
+Great! If you want to check the status of Intel ME you can see [this](https://github.com/corna/me_cleaner/wiki/Get-the-status-of-Intel-ME) guide.
 
 ##  It doesn't work...
 
