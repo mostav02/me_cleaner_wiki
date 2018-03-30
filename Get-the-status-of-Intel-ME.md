@@ -17,16 +17,14 @@ The output depends on several factors (`-s`/`-S` flag, ME version, ...), see the
 
 The output of `intelmetool` should match the content of this table:
 
-| `intelmetool` line       | Stock firmware                   | `me_cleaner` with `-S` or `-s` | `me_cleaner` with no options |
-|--------------------------|----------------------------------|--------------------------------|------------------------------|
-| `FW Partition Table`     | `OK`                             | `OK`                           | `OK`                         |
-| `Firmware Init Complete` | `YES`                            | `NO`                           | `NO`                         |
-| `Current Working State`  | `Normal`                         | (*)                            | (*)                          |
-| `Error Code`             | `No Error`                       | `No Error`                     | `Image Failure`              |
-| `Progress Phase`         | `Host Communication`             | `BUP Phase`                    | `BUP Phase`                  |
-| `Progress Phase State`   | `Host communication established` | `[...] straps say ME DISABLED` | `M0 kernel load`             |
-
-(*) anything but `Platform Disable Wait`
+| `intelmetool` line       | Stock firmware                   | `me_cleaner` with `-S` or `-s`       | `me_cleaner` with no options         |
+|--------------------------|----------------------------------|--------------------------------------|--------------------------------------|
+| `FW Partition Table`     | `OK`                             | `OK`                                 | `OK`                                 |
+| `Firmware Init Complete` | `YES`                            | `NO`                                 | `NO`                                 |
+| `Current Working State`  | `Normal`                         | Anything but `Platform Disable Wait` | Anything but `Platform Disable Wait` |
+| `Error Code`             | `No Error`                       | `No Error`                           | `Image Failure`                      |
+| `Progress Phase`         | `Host Communication`             | `BUP Phase`                          | `BUP Phase`                          |
+| `Progress Phase State`   | `Host communication established` | `[...] straps say ME DISABLED`       | `M0 kernel load`                     |
 
 If it shows an error like
 
