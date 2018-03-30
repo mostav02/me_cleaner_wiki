@@ -141,25 +141,4 @@ Please report the success on [#3](https://github.com/corna/me_cleaner/issues/3) 
 
 ## I've applied me_cleaner and my PC still works well: how can I check the status of Intel ME?
 
-You can use `intelmetool` from the coreboot repository:
-
-     $ git clone --depth=1 http://review.coreboot.org/p/coreboot
-     $ cd coreboot/util/intelmetool
-     $ make
-     $ sudo ./intelmetool -s
-
-On my platform (Thinkpad X220T with coreboot) it shows [this](https://gist.github.com/corna/d637a7c3279f41e9be65b43b673d54d3) (without the `-s`/`-S` options) or [this](https://gist.github.com/corna/6d8a24fdaca1afd0ae2a84ecde4573dd) (with the `-S` option).
-
-The interesting lines are:
- * `ME: FW Partition Table : OK` → the checksum of the FPT is correct
- * `ME: Firmware Init Complete : NO` → the firmware init hasn't been completed
- * `ME: Current Working State : Recovery` → anything but `Platform Disable Wait` (which means that the device will forcefully turn off in 30 mins) is OK here
- * `ME: Progress Phase : BUP Phase` → the initialization process is stuck at the bring-up phase
-
-With the `-s`/`-S` options:
- * `ME: Error Code : No Error` → Self-explanatory
- * `ME: Progress Phase State : Check to see if straps say ME DISABLED` → Intel ME has been disabled
-
-otherwise:
- * `ME: Error Code : Image Failure` → Intel ME had problems loading the firmware image
- * `ME: Progress Phase State : M0 kernel load` → the initialization has been interrupted during the kernel loading
+See [this](https://github.com/corna/me_cleaner/wiki/Get-the-status-of-Intel-ME).
