@@ -111,28 +111,7 @@ Detach the programmer, put the chip back into the system (if it is socketed) and
 
 ## It works!!
 
-Great! If you want to check the status of Intel ME you can download `intelmetool` from coreboot and run it:
-
-     $ cd coreboot/util/intelmetool
-     $ make
-     # ./intelmetool -m
-
-The relevant lines are
-
-     ME: Error Code              : Image Failure
-
-and (on pre-Skylake platforms)
-
-     ME: Progress Phase State    : M0 kernel load
-
-For example, on my Lenovo X220t with coreboot and a shrinked and deblobbed ME, [this](https://gist.github.com/corna/d637a7c3279f41e9be65b43b673d54d3) is the output.
-
-If it shows an error like
-
-     Error mapping physical memory 0x..... [0x4000] ERRNO=1 Operation not permitted
-     Could not map MEI PCI device memory
-
-you just have to [run your kernel with the `iomem=relaxed` option](https://github.com/corna/me_cleaner/issues/30#issuecomment-301193328).
+Great! If you want to check the status of Intel ME you can see [this](https://github.com/corna/me_cleaner/wiki/Get-the-status-of-Intel-ME) guide.
 
 ## It doesn't work...
 
