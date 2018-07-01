@@ -1,6 +1,6 @@
 # Intel Boot Guard
 
-Intel Boot Guard is a technology introduced by Intel in the 4th Intel Core generation (Haswell) to verify the boot process. This is accomplished by flashing the public key of the BIOS signature into the field programmable fuses (FPFs), a one-time programmable memory inside Intel ME, during the manufacturing process; in this way the CPU contains the public key of the BIOS and it can verify its correct signature during the boot. Obviously, once enabled by the manufacturer, Intel Boot Guard can't be disabled anymore.
+Intel Boot Guard is a technology introduced by Intel in the 4th Intel Core generation (Haswell) to verify the boot process. This is accomplished by flashing the public key of the BIOS signature into the field programmable fuses (FPFs), a one-time programmable memory inside Intel ME, during the manufacturing process; in this way it has the public key of the BIOS and it can verify the correct signature during every subsequent boot. Obviously, once enabled by the manufacturer, Intel Boot Guard can't be disabled anymore.
 
 ~~Unfortunately for us Intel Boot Guard is not compatible with _me_cleaner_ as the machine will not power on if Intel ME has been disabled, **even if the BIOS hasn't been modified**.~~
 
