@@ -3,6 +3,7 @@ Please let me know [here](https://github.com/corna/me_cleaner/issues/3) if me_cl
 
 | PCH               | CPU               | ME   | SKU      | Status    |
 |:-----------------:|:-----------------:|:----:|:--------:|:---------:|
+|                   |                   | 1.x-5.x |       | **WORKS** * |
 | Ibex Peak         | Nehalem/Westmere  | 6.0  | Ignition | **WORKS** |
 | Ibex Peak         | Nehalem/Westmere  | 6.x  | 1.5/5 MB | **WORKS** |
 | Cougar Point      | Sandy Bridge      | 7.x  | 1.5/5 MB | **WORKS** |
@@ -13,7 +14,9 @@ Please let me know [here](https://github.com/corna/me_cleaner/issues/3) if me_cl
 | Union Point       | Kabylake	        | 11.x | CON/COR  | **WORKS** |
 | 300-series        | Coffee Lake       | 11.x | CON/COR  | UNTESTED  |
 
-| SoC                   | TXE | SKU             | Status      |
+\* Firmware fully removed
+
+| SoC                   | TXE | SKU             | Status       |
 |:---------------------:|:---:|:---------------:|:------------:|
 | Bay Trail             | 1.x | 1.25/1.375/3 MB | UNTESTED     |
 | Braswell/Cherry Trail | 2.x | 1.375 MB        | **WORKS**    |
