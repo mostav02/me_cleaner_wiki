@@ -15,7 +15,7 @@ So, if you have a preassembled PC, with the _vPro_ sticker and at least Haswell 
 
 Anyways, if you want to check whether you have or not Intel Boot Guard enabled you can use `intelmetool`:
 
-     $ git clone --depth=1 http://review.coreboot.org/p/coreboot
+     $ git clone --depth=1 https://review.coreboot.org/coreboot
      $ cd util/intelmetool/
      $ make
      # modprobe msr

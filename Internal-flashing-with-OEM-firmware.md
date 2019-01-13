@@ -16,7 +16,7 @@ However the firmware on the vendor's website is usually a generic firmware, whic
 
 _me_cleaner_ needs a plain dump of the firmware (1:1 copy of the flash content, often called _.bin_ or _.rom_ files), while the vendor's tools sometimes work in different formats. To check whether the obtained firmware is in the correct format you can use coreboot's `ifdtool`.
 
-     $ git clone --depth=1 https://review.coreboot.org/p/coreboot
+     $ git clone --depth=1 https://review.coreboot.org/coreboot
      $ cd coreboot/util/ifdtool
      $ make
 

@@ -42,7 +42,7 @@ Power on the Raspberry Pi, open a shell and install the required tools:
 
      $ sudo apt-get update
      $ sudo apt-get install git flashrom
-     $ git clone --depth=1 http://review.coreboot.org/p/coreboot
+     $ git clone --depth=1 https://review.coreboot.org/coreboot
      $ make -C coreboot/util/ifdtool
      $ git clone https://github.com/corna/me_cleaner.git
 

@@ -42,7 +42,7 @@ If they're the same you can proceed, otherwise you should check if you've connec
 
 Just to be extra sure, you can also check if the dumped binary is correct. Download and build ifdtool from coreboot:
 
-     $ git clone --depth=1 https://review.coreboot.org/p/coreboot
+     $ git clone --depth=1 https://review.coreboot.org/coreboot
      $ cd coreboot/util/ifdtool
      $ make
 

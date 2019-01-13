@@ -5,7 +5,7 @@ There are various ways to accomplish this:
 
 The easiest way is to use `intelmetool`, a tool able to get the current status of Intel ME. If not already done, clone the `coreboot` repository:
 
-     $ git clone --depth=1 https://review.coreboot.org/p/coreboot
+     $ git clone --depth=1 https://review.coreboot.org/coreboot
 
 and run:
 
