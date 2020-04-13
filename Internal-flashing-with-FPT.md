@@ -47,13 +47,13 @@ Intel platform development guides for OEMs often mention "Flash Descriptor Secur
 Logically thinking, why would we use FPT when `flashrom` on Linux could provide same functionality via `--programmer internal`? Unfortunately it still doesn't support [intel_spi](https://github.com/torvalds/linux/blob/8afda8b26d01ee26a60ef2f0284a7f01a5ed96f8/drivers/mtd/spi-nor/intel-spi.c) ([description on kernel.org](https://www.kernel.org/doc/Documentation/mtd/intel-spi.txt)) which is a module used on Linux to provide the PCH SPI access. 
 There are some attempts to make a software flasher like [https://github.com/system76/intel-spi](https://github.com/system76/intel-spi), but there is nothing specific and universally usable.
 
-FPT is available for Linux starting from versions 12 only, in case you have this ME version or higher you could try to perform everything described here on Linux.
+It's recommendable to use Windows to follow this guide because **a)** all FPT versions are available for Windows **b)** avoiding any kind of headache related to compatibility/complexity. You could also do this on DOS or UEFI since FPT is available for them, but they won't be described here to avoid any confusion. 
 
-However it's recommendable to use Windows to follow this guide because **a)** all FPT versions are available for Windows **b)** avoiding any kind of headache related to compatibility/complexity. You could also do this on DOS or UEFI since FPT is available for them, but they won't be described here to avoid any confusion. 
+FPT is available for Linux starting from versions 12 only, in case you have this ME version or higher you could try to perform everything described here on Linux. **NOTE**: me_cleaner status for those versions is unknown, thus it's unlikely it will work.
 
 Now, be sure you have the following in order to follow this guide:
 
-- **Windows** 7/8/10  _\_OR\__  **Linux**  in case you have ME >=12
+- **Windows** 7/8/10  _\_OR\__  **Linux**  (only in case you have ME >=12, but they are not officially supported by me_cleaner for now)
 
   The command examples in this guide will be given using `fptw64.exe` which is a FPT executable for Windows 64-bit; on Linux the executable is named `FPT` thus should be called like `./FPT`;
   Windows 7 x64 Professional is recommended because it is guaranteed to work when following this guide.
